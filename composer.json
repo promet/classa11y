@@ -1,5 +1,5 @@
 {
-  "name": "prometsource-drupal/classa11y",
+  "name": "promet/classa11y",
   "description": "A base theme that adds bootstrap and other helpful functionality to child-themes.",
   "license": "GPL-2.0+",
   "type": "drupal-theme",
