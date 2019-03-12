@@ -1,0 +1,354 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the classa11y theme and subthemes.
+ */
+
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Template\Attribute;
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function classa11y_theme_registry_alter(&$theme_registry) {
+  $theme_keys = [
+    'block',
+    'html',
+    'media',
+    'node',
+    'page',
+    'paragraph',
+    'view',
+  ];
+
+  // Run through each theme id.
+  foreach (array_keys($theme_registry) as $key) {
+    // Attach post process if key or base_hook is in supported theme keys.
+    if (in_array($key, $theme_keys) || (array_key_exists('base hook', $theme_registry[$key]) && in_array($theme_registry[$key]['base hook'], $theme_keys))) {
+      // Add postprocess function to automatically convert attributes arrays.
+      $theme_registry[$key]['preprocess functions'][] = 'classa11y_postprocess';
+    }
+  }
+}
+
+/**
+ * Custom postprocess function added to cleanup preprocess variables.
+ *
+ * @see \Drupal\Core\Theme\ThemeManager::render()
+ */
+function classa11y_postprocess(array &$variables) {
+  // Initialize attribute variables if not set.
+  if (!isset($variables['#attribute_variables']) || !is_array($variables['#attribute_variables'])) {
+    $variables['#attribute_variables'] = [];
+  }
+
+  // Combine attribute variables with some default variables.
+  $default_attribute_variables = [
+    'figcaption_attributes',
+    'footer_attributes',
+    'image_attributes',
+    'inner_attributes',
+    'navigation_attributes',
+    'breadcrumbs_attributes',
+    'header_attributes',
+    'pre_content_attributes',
+    'sidebar_1_attributes',
+    'main_content_attributes',
+    'sidebar_2_attributes',
+    'pre_footer_attributes',
+  ];
+  $variables['#attribute_variables'] = array_merge($variables['#attribute_variables'], $default_attribute_variables);
+
+  // Convert attribute variables to Attribute objects for rendering.
+  $default_attributes = new Attribute();
+  foreach ($variables['#attribute_variables'] as $key) {
+    if (isset($variables[$key]) && !($variables[$key] instanceof Attribute)) {
+      // If any values are set, convert to an Attribute.
+      if (isset($variables[$key]) && $variables[$key]) {
+        $variables[$key] = new Attribute($variables[$key]);
+      }
+      // Otherwise, clone from defaults.
+      else {
+        $variables[$key] = clone $default_attributes;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_hook() for block.
+ */
+function classa11y_preprocess_block(array &$variables) {
+  $plugin_css = Html::cleanCssIdentifier($variables['plugin_id']);
+  $provider_css = Html::cleanCssIdentifier($variables['configuration']['provider']);
+  $block_class = 'block-' . $plugin_css;
+
+  // Attach default and bundle-specific libraries.
+  _classa11y_attach_libraries($variables, 'block', $provider_css, $plugin_css);
+
+  // Basic attribute variables.
+  $variables['attributes']['class'][] = 'block';
+  $variables['attributes']['class'][] = 'block-' . $provider_css;
+  $variables['attributes']['class'][] = $block_class;
+  $variables['attributes']['data-entity-id'] = $variables['plugin_id'];
+  $variables['attributes']['data-entity-type'] = 'block';
+
+  $variables['content_attributes']['class'][] = 'block__content';
+  $variables['content_attributes']['class'][] = $block_class . '__content';
+
+  $variables['title_attributes']['class'][] = 'title';
+  $variables['title_attributes']['class'][] = 'block__title';
+  $variables['title_attributes']['class'][] = $block_class . '__title';
+}
+
+/**
+ * Implements hook_preprocess_hook() for html.
+ */
+function classa11y_preprocess_html(array &$variables) {
+  // Set class if user is logged in.
+  if (isset($variables['logged_in']) && $variables['logged_in']) {
+    $variables['attributes']['class'][] = 'user-logged-in';
+  }
+  // Set class of the current root path.
+  if (isset($variables['root_path']) && !empty($variables['root_path'])) {
+    $variables['attributes']['class'][] = 'path-' . Html::cleanCssIdentifier($variables['root_path']);
+  }
+  else {
+    $variables['attributes']['class'][] = 'path-frontpage';
+  }
+  // Set node type if on node.
+  if (isset($variables['node_type']) && !empty($variables['node_type'])) {
+    $variables['attributes']['class'][] = 'page-node-type-' . Html::cleanCssIdentifier($variables['node_type']);
+  }
+  // Alert if database is offline.
+  if (isset($variables['db_offline']) && $variables['db_offline']) {
+    $variables['attributes']['class'][] = 'db-offline';
+  }
+}
+
+/**
+ * Implements hook_preprocess_hook() for media.
+ */
+function classa11y_preprocess_media(array &$variables) {
+  /** @var \Drupal\media\MediaInterface $media */
+  $media = $variables['media'];
+  $bundle = $media->bundle();
+  $view_mode = $variables['view_mode'];
+
+  $bundle_css = Html::cleanCssIdentifier($bundle);
+  $view_mode_css = Html::cleanCssIdentifier($view_mode);
+
+  // Attach default and bundle-specific libraries.
+  _classa11y_attach_libraries($variables, 'media', $view_mode_css, $bundle_css);
+
+  $variables['attributes']['class'][] = 'media';
+  $variables['attributes']['class'][] = "media--type-{$bundle_css}";
+  $variables['attributes']['class'][] = "media--view-mode-{$view_mode_css}";
+
+  if ($media->isPublished() == FALSE) {
+    $variables['attributes']['class'][] = 'media--unpublished';
+  }
+}
+
+/**
+ * Implements hook_preprocess_hook() for node.
+ */
+function classa11y_preprocess_node(array &$variables) {
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $variables['node'];
+  $bundle = $node->bundle();
+  $view_mode = $variables['view_mode'];
+
+  $bundle_css = Html::cleanCssIdentifier($bundle);
+  $view_mode_css = Html::cleanCssIdentifier($view_mode);
+
+  // Attach default and bundle-specific libraries.
+  _classa11y_attach_libraries($variables, 'node', $view_mode_css, $bundle_css);
+
+  // Initialize attributes.
+  $variables['footer_attributes'] = [];
+  $variables['image_attributes'] = [];
+
+  // Basic attribute variables.
+  $variables['attributes']['class'][] = 'node';
+  $variables['attributes']['class'][] = 'node';
+  $variables['attributes']['class'][] = "node--type-{$bundle_css}";
+  $variables['attributes']['class'][] = "node--view-mode-{$view_mode_css}";
+  if ($node->isPromoted()) {
+    $variables['attributes']['class'][] = 'node--promoted';
+  }
+  if ($node->isSticky()) {
+    $variables['attributes']['class'][] = 'node--sticky';
+  }
+  if ($node->isPublished() == FALSE) {
+    $variables['attributes']['class'][] = 'node--unpublished';
+  }
+  $variables['attributes']['data-entity-id'] = $node->id();
+  $variables['attributes']['data-entity-type'] = $node->getEntityTypeId();
+  $variables['content_attributes']['class'][] = 'node__content';
+  $variables['footer_attributes']['class'][] = 'node__footer';
+  $variables['footer_attributes']['class'][] = 'node___meta';
+  $variables['footer_attributes']['class'][] = 'container';
+  $variables['image_attributes']['class'][] = 'node__image';
+  $variables['title_attributes']['class'][] = 'node__title';
+}
+
+/**
+ * Implements hook_preprocess_hook() for page.
+ */
+function classa11y_preprocess_page(array &$variables) {
+  // Basic attribute variables.
+  $variables['attributes']['class'][] = 'page';
+  $variables['attributes']['class'][] = 'layout-container';
+
+  $fluid_regions = [
+    'navigation',
+    'breadcrumbs',
+    'header',
+    'pre_content',
+    'main_content',
+    'pre_footer',
+    'footer'
+  ];
+
+  foreach ($fluid_regions as $region) {
+    // Track variables that should be converted to attribute objects.
+    $variables['#attribute_variables'][] = $region . '_content_attributes';
+
+    // Apply attributes.
+    $variables[$region . '_attributes']['class'][] = 'layout-' . Html::cleanCssIdentifier($region);
+    $variables[$region . '_attributes']['class'][] = 'container-fluid';
+    $variables[$region . '_attributes']['class'][] = 'p-0';
+    $variables[$region . '_attributes']['role'] = 'contentinfo';
+    $variables[$region . '_content_attributes']['class'][] = 'layout-' . Html::cleanCssIdentifier($region) . '__content';
+  }
+
+  // Role override.
+  $variables['navigation_attributes']['role'] = 'banner';
+
+  // Get main content area width.
+  $main_width = 12;
+  if (!empty($variables['page']['sidebar_one'])) {
+    $main_width -= 3;
+  }
+  if (!empty($variables['page']['sidebar_two'])) {
+    $main_width -= 3;
+  }
+  $variables['main_content_attributes']['class'][] = 'col-12';
+  if ($main_width < 12) {
+    $variables['main_content_attributes']['class'][] = 'col-lg-' . $main_width;
+  }
+
+  // Sidebar attributes.
+  $variables['sidebar_1_attributes']['class'][] = 'layout-sidebar-1';
+  $variables['sidebar_1_attributes']['class'][] = 'col-12';
+  $variables['sidebar_1_attributes']['class'][] = 'col-lg-3';
+  $variables['sidebar_1_attributes']['class'][] = 'p-0';
+  $variables['sidebar_2_attributes']['class'][] = 'layout-sidebar-2';
+  $variables['sidebar_2_attributes']['class'][] = 'col-12';
+  $variables['sidebar_2_attributes']['class'][] = 'col-lg-3';
+  $variables['sidebar_2_attributes']['class'][] = 'p-0';
+
+  $variables['sidebar_1_attributes']['role'] = 'complementary';
+  $variables['sidebar_2_attributes']['role'] = 'complementary';
+}
+
+/**
+ * Implements hook_preprocess_hook() for paragraph.
+ */
+function classa11y_preprocess_paragraph(array &$variables) {
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+  $bundle = $paragraph->bundle();
+  $view_mode = $variables['view_mode'];
+
+  $bundle_css = Html::cleanCssIdentifier($bundle);
+  $view_mode_css = Html::cleanCssIdentifier($view_mode);
+
+  // Attach default and bundle-specific libraries.
+  _classa11y_attach_libraries($variables, 'paragraph', $view_mode_css, $bundle_css);
+
+  // Set paragraph ID.
+  $variables['attributes']['id'] = 'paragraph-' . $paragraph->id();
+
+  // Set default variables and attributes.
+  $base_class = 'component-' . $bundle_css;
+  $variables['component_base_class'] = $base_class;
+  $variables['attributes']['class'][] = $base_class;
+  $variables['attributes']['class'][] = 'paragraph--type-' . $bundle_css;
+  $variables['attributes']['class'][] = 'paragraph--view-mode-' . $view_mode_css;
+  $variables['attributes']['class'][] = 'paragraph-component';
+  $variables['attributes']['data-entity-id'] = $paragraph->id();
+  $variables['attributes']['data-entity-type'] = $paragraph->getEntityTypeId();
+  $variables['image_attributes']['class'][] = $base_class . '__image';
+  $variables['title_attributes']['class'][] = $base_class . '__title';
+  $variables['content_attributes']['class'][] = $base_class . '__content';
+  $variables['footer_attributes']['class'][] = $base_class . '__footer';
+
+  // Set universal reusable variables.
+  $variables['image'] = [];
+  $variables['title'] = [];
+  $variables['footer'] = [];
+}
+
+/**
+ * Implements hook_preprocess_region().
+ */
+function classa11y_preprocess_region(&$variables) {
+  $region_css = Html::cleanCssIdentifier($variables['region']);
+
+  // Attach region-specific libraries.
+  _classa11y_attach_libraries($variables, 'region', $region_css);
+
+}
+
+/**
+ * Implements hook_preprocess_hook() for views_view.
+ */
+function classa11y_preprocess_views_view(array &$variables) {
+  // Attach default and bundle-specific libraries.
+  _classa11y_attach_libraries($variables, 'view', $variables['id'], $variables['display_id']);
+
+  $variables['attributes']['data-entity-id'] = $variables['id'];
+  $variables['attributes']['data-entity-type'] = 'view';
+}
+
+/**
+ * Auto attaches libraries for active and base themes using naming convention.
+ *
+ * @param array &$variables
+ *   The template variables array to attach libraries to.
+ * @param string $prefix
+ *   The library prefix to use, typically the entity type ID.
+ * @param string $view_mode
+ *   The view-mode. Defaults to 'full'.
+ * @param null|string $bundle
+ *   The entity type bundle or more specific instance ID.
+ */
+function _classa11y_attach_libraries(&$variables, $prefix, $view_mode = 'full', $bundle = NULL) {
+  // Clean variables.
+  $prefix = Html::cleanCssIdentifier($prefix);
+  $view_mode = Html::cleanCssIdentifier($view_mode);
+  $bundle = (!is_null($bundle)) ? Html::cleanCssIdentifier($bundle) : $bundle;
+
+  // Get active theme.
+  $active_theme = \Drupal::theme()->getActiveTheme();
+
+  // Get themed to attach libraries for (filter out ones we don't care about).
+  $theme_names = array_filter(array_keys($active_theme->getBaseThemes()), function ($theme_name) {
+    return !in_array($theme_name, ['classa11y', 'classy', 'stable']);
+  });
+
+  // Add in the current active theme.
+  $theme_names[] = $active_theme->getName();
+
+  // Attach dynamic libraries.
+  foreach ($theme_names as $theme_name) {
+    $variables['#attached']['library'][] = "{$theme_name}/{$prefix}";
+    $variables['#attached']['library'][] = "{$theme_name}/{$prefix}--{$view_mode}";
+    if (!is_null($bundle)) {
+      $variables['#attached']['library'][] = "{$theme_name}/{$prefix}--{$view_mode}--{$bundle}";
+    }
+  }
+}

@@ -1,0 +1,119 @@
+{#
+/**
+ * @file
+ * Theme override to display a single page.
+ *
+ * The doctype, html, head and body tags are not in this template. Instead they
+ * can be found in the html.html.twig template in this directory.
+ *
+ * Available variables:
+ *
+ * General utility variables:
+ * - base_path: The base URL path of the Drupal installation. Will usually be
+ *   "/" unless you have installed Drupal in a sub-directory.
+ * - is_front: A flag indicating if the current page is the front page.
+ * - logged_in: A flag indicating if the user is registered and signed in.
+ * - is_admin: A flag indicating if the user has permission to access
+ *   administration pages.
+ *
+ * Site identity:
+ * - front_page: The URL of the front page. Use this instead of base_path when
+ *   linking to the front page. This includes the language domain or prefix.
+ *
+ * Page content (in order of occurrence in the default page.html.twig):
+ * - node: Fully loaded node, if there is an automatically-loaded node
+ *   associated with the page and the node ID is the second argument in the
+ *   page's path (e.g. node/12345 and node/12345/revisions, but not
+ *   comment/reply/12345).
+ *
+ * Regions:
+ * - page.navigation: Items for the navigation region.
+ * - page.breadcrumbs: Items for the breadcrumbs region.
+ * - page.header: Items for the header region.
+ * - page.pre_content: The pre content of the current page.
+ * - page.sidebar_one: Items for the first sidebar.
+ * - page.help: The help section of the current page.
+ * - page.content: The main content of the current page.
+ * - page.sidebar_two: Items for the second sidebar.
+ * - page.pre_footer: Items for pre-footer region.
+ * - page.footer: Items for the footer region.
+ *
+ * @see template_preprocess_page()
+ * @see html.html.twig
+ */
+#}
+<div{{ attributes }}>
+  <header>
+    {% if page.navigation %}
+      <section{{ navigation_attributes }}>
+        <div{{ navigation_content_attributes }}>
+          {{ page.navigation }}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if page.breadcrumbs %}
+      <section{{ breadcrumbs_attributes }}>
+        <div{{ breadcrumbs_content_attributes }}>
+          {{ page.breadcrumbs }}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if page.header %}
+      <section{{ header_attributes }}>
+        <div{{ header_content_attributes }}>
+          {{ page.header }}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if page.pre_content %}
+      <section{{ pre_content_attributes }}>
+        <div{{ pre_content_content_attributes }}>
+          {{ page.pre_content }}
+        </div>
+      </section>
+    {% endif %}
+  </header>
+  <main class="layout-main container-fluid p-0" role="main" id="main-content" tabindex="-1">
+    <div class="layout-main__content row">
+      {% if page.sidebar_one %}
+        <aside class="layout-sidebar-one col-12 col-lg-3 p-0" role="complementary">
+          {{ page.sidebar_one }}
+        </aside>
+      {% endif %}
+
+      <div{{ main_content_attributes }}>
+        {{ page.help }}
+        <div{{ main_content_content_attributes }}>
+          {{ page.content }}
+        </div>
+      </div>
+
+      {% if page.sidebar_two %}
+        <aside class="layout-sidebar-two col-12  col-lg-3  p-0" role="complementary">
+          {{ page.sidebar_two }}
+        </aside>
+      {% endif %}
+    </div>
+  </main>
+
+  <footer>
+    {% if page.pre_footer %}
+      <section{{ pre_footer_attributes }}>
+        <div{{ pre_footer_content_attributes }}>
+          {{ page.pre_footer }}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if page.footer %}
+      <section{{ footer_attributes }}>
+        <div{{ footer_content_attributes }}>
+          {{ page.footer }}
+        </div>
+      </section>
+    {% endif %}
+  </footer>
+</div>

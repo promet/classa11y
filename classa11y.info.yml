@@ -1,0 +1,22 @@
+name: Classa11y
+type: theme
+description: This is an accessible subtheme of Classy
+core: 8.x
+# Defines the base theme
+base theme: classy
+# Defines libraries group in which we can add css/js.
+libraries:
+  - classa11y/lib--font-awesome
+  - classa11y/lib--bootstrap
+# Regions
+regions:
+  navigation: 'Navigation'
+  breadcrumbs: 'Breadcrumbs'
+  header: 'Header'
+  pre_content: 'Pre-content'
+  sidebar_one: 'Sidebar1'
+  help: 'Help'
+  content: 'Main Content'
+  sidebar_two: 'Sidebar2'
+  pre_footer: 'Pre-footer'
+  footer: 'Footer'

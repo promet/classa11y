@@ -1,0 +1,54 @@
+# Library naming structure
+#
+# library--{library-name}
+#   Use library naming structure for external libraries that will then be used as dependencies of other libraries.
+#
+# component--{component-name}
+#   Use component naming structure for reusable items that aren't necessarily entity-specific. Include these as
+#   dependencies on the entity-specific libraries.
+#
+# {entity-type}--{view-mode}
+# {entity-type}--{view-mode}--{bundle}
+#   Use entity naming structure to allow the entities to automatically attach styles when rendered.
+#
+# NOTE: Entity CSS and JS files that are included in multiple different entity-specific libraries, should probably be
+#       broken into the component structure listed above and added as a dependency on the entity-specific library.
+#
+
+# ======= Globals ====== #
+base:
+  version: 1.x
+  css:
+    theme:
+      css/theme.css: {}
+  js:
+    js/theme.js: {}
+  dependencies:
+    - core/drupal
+    - core/editor
+    - core/jquery
+    - core/jquery.once
+
+# ========== External Libraries ========== #
+lib--bootstrap:
+  version: 4.3
+  css:
+    component:
+      //maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css: { type: external, minified: true }
+  js:
+    //cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js: { type: external, minified: true }
+    //maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js: { type: external, minified: true }
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+
+lib--font-awesome:
+  remote: https://fontawesome.com
+  version: 5.3.1
+  license:
+    name: MIT
+    url: https://github.com/FortAwesome/Font-Awesome/blob/master/LICENSE.txt
+    gpl-compatible: true
+  css:
+    theme:
+      https://use.fontawesome.com/releases/v5.3.1/css/all.css: { type: external, minified: true }

@@ -1,0 +1,21 @@
+name: THEMENAME
+type: theme
+description: 'Starterkit theme based on classa11y base theme'
+core: 8.x
+# Defines the base theme
+base theme: classa11y
+# Defines libraries group in which we can add css/js.
+libraries:
+  - THEMENAME/base
+# Regions
+regions:
+  navigation: 'Navigation'
+  breadcrumbs: 'Breadcrumbs'
+  header: 'Header'
+  pre_content: 'Pre-content'
+  sidebar_one: 'Sidebar1'
+  help: 'Help'
+  content: 'Main Content'
+  sidebar_two: 'Sidebar2'
+  pre_footer: 'Pre-footer'
+  footer: 'Footer'
