@@ -3,7 +3,7 @@
   "description": "A base theme that adds bootstrap and other helpful functionality to child-themes.",
   "license": "GPL-2.0+",
   "type": "drupal-theme",
-  "homepage": "https://github.com/Promet/Drupal-Theme-Classa11y",
+  "homepage": "https://github.com/promet/classa11y",
   "authors": [
     {
       "name": "Jake Wilmes",
