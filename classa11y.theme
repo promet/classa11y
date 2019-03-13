@@ -219,7 +219,6 @@ function classa11y_preprocess_page(array &$variables) {
     // Apply attributes.
     $variables[$region . '_attributes']['class'][] = 'layout-' . Html::cleanCssIdentifier($region);
     $variables[$region . '_attributes']['class'][] = 'container-fluid';
-    $variables[$region . '_attributes']['class'][] = 'p-0';
     $variables[$region . '_attributes']['role'] = 'contentinfo';
     $variables[$region . '_content_attributes']['class'][] = 'layout-' . Html::cleanCssIdentifier($region) . '__content';
   }
@@ -244,11 +243,9 @@ function classa11y_preprocess_page(array &$variables) {
   $variables['sidebar_1_attributes']['class'][] = 'layout-sidebar-1';
   $variables['sidebar_1_attributes']['class'][] = 'col-12';
   $variables['sidebar_1_attributes']['class'][] = 'col-lg-3';
-  $variables['sidebar_1_attributes']['class'][] = 'p-0';
   $variables['sidebar_2_attributes']['class'][] = 'layout-sidebar-2';
   $variables['sidebar_2_attributes']['class'][] = 'col-12';
   $variables['sidebar_2_attributes']['class'][] = 'col-lg-3';
-  $variables['sidebar_2_attributes']['class'][] = 'p-0';
 
   $variables['sidebar_1_attributes']['role'] = 'complementary';
   $variables['sidebar_2_attributes']['role'] = 'complementary';
