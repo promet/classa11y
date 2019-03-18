@@ -1,4 +1,4 @@
-a {
+.page a {
   color: #fff;
   background-color: #023587;
   border-color: #023587;
@@ -17,21 +17,23 @@ a {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-a:active, a:hover, a:focus {
+.page a:active,
+.page a:hover,
+.page a:focus {
   outline: 0;
 }
 
-a:active {
+.page a:active {
   color: #fff;
   background-color: #022866;
   border-color: #022866;
 }
 
-a:focus {
+.page a:focus {
   box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
 }
 
-a:hover {
+.page a:hover {
   color: #fff;
   background-color: #022866;
   border-color: #022866;
