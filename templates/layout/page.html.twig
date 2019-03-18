@@ -76,7 +76,7 @@
       </section>
     {% endif %}
   </header>
-  <main class="layout-main container-fluid p-0" role="main" id="main-content" tabindex="-1">
+  <main class="layout-main container-fluid" role="main" id="main-content" tabindex="-1">
     <div class="layout-main__content row">
       {% if page.sidebar_one %}
         <aside class="layout-sidebar-one col-12 col-lg-3" role="complementary">
@@ -92,7 +92,7 @@
       </div>
 
       {% if page.sidebar_two %}
-        <aside class="layout-sidebar-two col-12  col-lg-3" role="complementary">
+        <aside class="layout-sidebar-two col-12  col-lg-3  p-0" role="complementary">
           {{ page.sidebar_two }}
         </aside>
       {% endif %}

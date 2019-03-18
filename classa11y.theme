@@ -82,6 +82,10 @@ function classa11y_postprocess(array &$variables) {
 function classa11y_preprocess_block(array &$variables) {
   $plugin_css = Html::cleanCssIdentifier($variables['plugin_id']);
   $provider_css = Html::cleanCssIdentifier($variables['configuration']['provider']);
+  if ($variables['base_plugin_id'] == 'block_content') {
+    $info = strtolower($variables['content']['#block_content']->get('info')->value);
+    $plugin_css = Html::cleanCssIdentifier($info);
+  }
   $block_class = 'block-' . $plugin_css;
 
   // Attach default and bundle-specific libraries.
