@@ -223,12 +223,14 @@ function classa11y_preprocess_page(array &$variables) {
     // Apply attributes.
     $variables[$region . '_attributes']['class'][] = 'layout-' . Html::cleanCssIdentifier($region);
     $variables[$region . '_attributes']['class'][] = 'container-fluid';
-    $variables[$region . '_attributes']['role'] = 'contentinfo';
+    $variables[$region . '_attributes']['role'] = 'region';
     $variables[$region . '_content_attributes']['class'][] = 'layout-' . Html::cleanCssIdentifier($region) . '__content';
-  }
+    $variables[$region . '_attributes']['aria-labelledby'] = 'region' . Html::cleanCssIdentifier($region);
 
-  // Role override.
-  $variables['navigation_attributes']['role'] = 'banner';
+    // Store heading to print in template.
+    $variables[$region . '_id'] = 'region' . Html::cleanCssIdentifier($region);
+    $variables[$region . '_heading'] = ucwords(str_replace('_', ' ', $region)) . ' Region';
+  }
 
   // Get main content area width.
   $main_width = 12;

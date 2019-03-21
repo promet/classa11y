@@ -43,10 +43,11 @@
  */
 #}
 <div{{ attributes }}>
-  <header>
+  <header role="banner">
     {% if page.navigation %}
       <section{{ navigation_attributes }}>
         <div{{ navigation_content_attributes }}>
+          <h2 id="{{ navigation_id }}" class="visually-hidden">{{ navigation_heading }}</h2>
           {{ page.navigation }}
         </div>
       </section>
@@ -55,6 +56,7 @@
     {% if page.breadcrumbs %}
       <section{{ breadcrumbs_attributes }}>
         <div{{ breadcrumbs_content_attributes }}>
+          <h2 id="{{ breadcrumbs_id }}" class="visually-hidden">{{ breadcrumbs_heading }}</h2>
           {{ page.breadcrumbs }}
         </div>
       </section>
@@ -63,6 +65,7 @@
     {% if page.header %}
       <section{{ header_attributes }}>
         <div{{ header_content_attributes }}>
+          <h2 id="{{ header_id }}" class="visually-hidden">{{ header_heading }}</h2>
           {{ page.header }}
         </div>
       </section>
@@ -71,6 +74,7 @@
     {% if page.pre_content %}
       <section{{ pre_content_attributes }}>
         <div{{ pre_content_content_attributes }}>
+          <h2 id="{{ pre_content_id }}" class="visually-hidden">{{ pre_content_heading }}</h2>
           {{ page.pre_content }}
         </div>
       </section>
@@ -99,10 +103,11 @@
     </div>
   </main>
 
-  <footer>
+  <footer role="contentinfo">
     {% if page.pre_footer %}
       <section{{ pre_footer_attributes }}>
         <div{{ pre_footer_content_attributes }}>
+          <h2 id="{{ pre_footer_id }}" class="visually-hidden">{{ pre_footer_heading }}</h2>
           {{ page.pre_footer }}
         </div>
       </section>
@@ -111,6 +116,7 @@
     {% if page.footer %}
       <section{{ footer_attributes }}>
         <div{{ footer_content_attributes }}>
+          <h2 id="{{ footer_id }}" class="visually-hidden">{{ footer_heading }}</h2>
           {{ page.footer }}
         </div>
       </section>
