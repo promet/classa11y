@@ -1,41 +1,19 @@
-.page a {
-  color: #fff;
-  background-color: #023587;
-  border-color: #023587;
+.page a,
+.page a:active {
+  border-radius: 0.25rem;
+  color: #023587;
   display: inline-block;
-  font-weight: 400;
-  text-align: center;
-  vertical-align: middle;
+  font-size: 1rem;
+  text-decoration: underline;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+  user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.page a:active,
 .page a:hover,
 .page a:focus {
-  outline: 0;
-}
-
-.page a:active {
-  color: #fff;
-  background-color: #022866;
-  border-color: #022866;
-}
-
-.page a:focus {
-  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
-}
-
-.page a:hover {
-  color: #fff;
-  background-color: #022866;
-  border-color: #022866;
   text-decoration: none;
 }

@@ -107,6 +107,25 @@ function classa11y_preprocess_block(array &$variables) {
 }
 
 /**
+ * Implements hook_preprocess_hook() for form elements.
+ */
+function classa11y_preprocess_input(&$variables) {
+  if (array_key_exists('data-drupal-selector', $variables['attributes']) &&
+    $variables['attributes']['data-drupal-selector'] == 'edit-managed-file-upload') {
+    $variables['attributes']['class'][] = 'js-aria-label-add';
+  }
+}
+
+/**
+ * Implements hook_preprocess_hook() for form element labels.
+ */
+function classa11y_preprocess_form_element_label(&$variables) {
+  if (isset($variables['element']['#label_type']) && $variables['element']['#label_type'] == 'managed_file') {
+    $variables['label_only'] = trim($variables['title']['#markup']);
+  }
+}
+
+/**
  * Implements hook_preprocess_hook() for html.
  */
 function classa11y_preprocess_html(array &$variables) {
