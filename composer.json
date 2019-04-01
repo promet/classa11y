@@ -1,5 +1,5 @@
 {
-  "name": "promet/classa11y",
+  "name": "drupal/classa11y",
   "description": "A base theme that adds bootstrap and other helpful functionality to child-themes.",
   "license": "GPL-2.0+",
   "type": "drupal-theme",
@@ -9,5 +9,10 @@
       "name": "Jake Wilmes",
       "email": "jwilmes@prometsource.com"
     }
-  ]
+  ],
+  "homepage": "https://www.drupal.org/project/metatag",
+  "support" : {
+    "issues": "https://github.com/promet/classa11y",
+    "source": "http://cgit.drupalcode.org/classa11y"
+  }
 }
