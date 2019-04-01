@@ -6,9 +6,9 @@ core: 8.x
 base theme: classy
 # Module dependencies
 dependencies:
-  - help
-  - system
-  - search
+  - drupal:help
+  - drupal:system
+  - drupal:search
 # Defines libraries group in which we can add css/js.
 libraries:
   - classa11y/base
