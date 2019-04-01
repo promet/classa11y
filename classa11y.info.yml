@@ -4,11 +4,6 @@ description: This is an accessible subtheme of Classy
 core: 8.x
 # Defines the base theme
 base theme: classy
-# Module dependencies
-dependencies:
-  - drupal:help
-  - drupal:system
-  - drupal:search
 # Defines libraries group in which we can add css/js.
 libraries:
   - classa11y/base
