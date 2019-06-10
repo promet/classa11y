@@ -51,4 +51,4 @@ lib--font-awesome:
     gpl-compatible: true
   css:
     theme:
-      https://use.fontawesome.com/releases/v5.3.1/css/all.css: { type: external, minified: true }
+      https://use.fontawesome.com/releases/v5.9.0/css/all.css: { type: external, minified: true }
