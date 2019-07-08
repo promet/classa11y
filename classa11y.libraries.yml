@@ -44,11 +44,11 @@ lib--bootstrap:
 
 lib--font-awesome:
   remote: https://fontawesome.com
-  version: 5.3.1
+  version: 5.9.0
   license:
     name: MIT
     url: https://github.com/FortAwesome/Font-Awesome/blob/master/LICENSE.txt
     gpl-compatible: true
   css:
     theme:
-      https://use.fontawesome.com/releases/v5.3.1/css/all.css: { type: external, minified: true }
+      https://use.fontawesome.com/releases/v5.9.0/css/all.css: { type: external, minified: true }
