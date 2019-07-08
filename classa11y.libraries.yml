@@ -34,7 +34,7 @@ lib--bootstrap:
   version: 4.3
   css:
     component:
-      //maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css: { type: external, minified: true }
+    //maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css: { type: external, minified: true }
   js:
     //cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js: { type: external, minified: true }
     //maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js: { type: external, minified: true }
