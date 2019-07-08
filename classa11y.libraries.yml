@@ -44,7 +44,7 @@ lib--bootstrap:
 
 lib--font-awesome:
   remote: https://fontawesome.com
-  version: 5.9.0
+  version: 5.3.1
   license:
     name: MIT
     url: https://github.com/FortAwesome/Font-Awesome/blob/master/LICENSE.txt
